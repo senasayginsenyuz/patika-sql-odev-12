@@ -1,17 +1,41 @@
-# PatikaSQL--Ödev12
+# Patika SQL Bootcamp — Ödev 12
 
---1. Film tablosunda film uzunluğu length sütununda gösterilmektedir. Uzunluğu ortalama film uzunluğundan fazla kaç tane film olduğunu gösterir.
+Patika.dev SQL bootcamp'inin **12. ödevi**. Alt sorgular (subqueries) ve `JOIN` + `GROUP BY` ile veri analizi.
 
-SELECT COUNT(*) FROM film WHERE length > (SELECT AVG(length) FROM film);
+**Örnek veritabanı:** DVD Rental (Pagila) — `film`, `payment`, `customer` tabloları.
 
---2. Film tablosunda en yüksek rental_rate değerine sahip kaç tane film olduğunu gösterir.
+## 📌 Kapsanan Konular
 
-SELECT COUNT(*) FROM film WHERE rental_rate = (SELECT MAX(rental_rate) FROM film);
+- Skaler alt sorgu: `WHERE ... = (SELECT ...)`
+- Alt sorgu içinde `AVG`, `MAX`, `MIN`
+- `JOIN` + `GROUP BY` + `ORDER BY` + `LIMIT`
+- Takma ad (`AS`)
 
---3. Film tablosunda en düşük rental_rate ve en düşük replacement_cost değerlerine sahip filmleri sıralar.
+## 📝 Sorgular
 
-SELECT title, rental_rate, replacement_cost FROM film WHERE rental_rate = (SELECT MIN(rental_rate) FROM film) AND replacement_cost = (SELECT MIN(replacement_cost) FROM film);
+```sql
+-- 1. Ortalamadan uzun film sayısı
+SELECT COUNT(*) FROM film
+WHERE length > (SELECT AVG(length) FROM film);
 
---4. Payment tablosunda en fazla sayıda alışveriş yapan müşterileri(customer) sıralar.
+-- 2. En yüksek rental_rate'e sahip film sayısı
+SELECT COUNT(*) FROM film
+WHERE rental_rate = (SELECT MAX(rental_rate) FROM film);
 
-SELECT customer.first_name, customer.last_name, COUNT(*) as total_payments FROM payment JOIN customer ON payment.customer_id = customer.customer_id GROUP BY payment.customer_id ORDER BY total_payments DESC LIMIT 10;
+-- 3. En düşük rental_rate ve replacement_cost'a sahip filmler
+SELECT title, rental_rate, replacement_cost FROM film
+WHERE rental_rate = (SELECT MIN(rental_rate) FROM film)
+  AND replacement_cost = (SELECT MIN(replacement_cost) FROM film);
+
+-- 4. En çok alışveriş yapan 10 müşteri
+SELECT customer.first_name, customer.last_name, COUNT(*) AS total_payments
+FROM payment
+JOIN customer ON payment.customer_id = customer.customer_id
+GROUP BY payment.customer_id
+ORDER BY total_payments DESC
+LIMIT 10;
+```
+
+## 👤 Yazar
+
+**Sena Saygın Şenyüz** — Endüstri Mühendisi & Veri Analisti | ECBA® Sertifikalı
